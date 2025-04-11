@@ -13,11 +13,13 @@ app.use(cookieParser());
 import dotenv from 'dotenv';
 import authRouter from './routes/auth.route.js';
 import movieRouter from './routes/movie.route.js';
+import tvRouter from './routes/tv.route.js';
 dotenv.config();
 
 
 app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/movie',movieRouter);
+app.use('/api/v1/tv',tvRouter)
 
 
 

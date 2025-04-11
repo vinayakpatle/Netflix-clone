@@ -60,9 +60,6 @@ export const getMoviesByCategory=async(req,res)=>{
         const data=await fetchFromTMDB(`https://api.themoviedb.org/3/movie/${category}?language=en-US&page=1`)
         return res.status(200).json({content:data.results})
     }catch(e){
-        if(e.message.includes("404")){
-            return res.status(404).send(null)
-        }
         console.log('Error in getMoviesByCategory',e.message);
         return res.status(500).json({message:"Internal server error",error:e.message});
     }
