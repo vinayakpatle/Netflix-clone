@@ -74,7 +74,7 @@ export const login=async(req,res)=>{
         if(!user) return res.status(400).json({message:'Invalid credentials'});
         const isPasswordMatch=await bcrypt.compare(password,user.password);
         if(!isPasswordMatch) return res.status(400).json({message:'Password is incorrect'})
-        generateToken(user.d,res);
+        generateToken(user.id,res);
         return res.status(200).json({message:'Login successful',user:{
             id:user.id,
             email:user.email,
@@ -102,14 +102,7 @@ export const logout=async(req,res)=>{
 export const authCheck=async(req,res)=>{
     try{
         const user=req.user;
-        return res.status(200).json({user:user.map(user=>{
-            return {
-                id:user.id,
-                email:user.email,
-                username:user.username,
-                createdAt:user.createdAt
-            }
-        })})
+        return res.status(200).json({user:user})
     }catch(e){
         console.log('Error in authCheck',e.message);
         return res.status(500).json({message:'Internal server error',error:e.message})

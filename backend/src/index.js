@@ -14,14 +14,15 @@ import dotenv from 'dotenv';
 import authRouter from './routes/auth.route.js';
 import movieRouter from './routes/movie.route.js';
 import tvRouter from './routes/tv.route.js';
+import searchRouter from './routes/search.route.js';
+import userMiddleware from './middleware/userMiddleware.js';
 dotenv.config();
 
 
 app.use('/api/v1/auth',authRouter);
-app.use('/api/v1/movie',movieRouter);
-app.use('/api/v1/tv',tvRouter)
-
-
+app.use('/api/v1/movie',userMiddleware,movieRouter);
+app.use('/api/v1/tv',userMiddleware,tvRouter)
+app.use('/api/v1/search',userMiddleware,searchRouter)
 
 
 
