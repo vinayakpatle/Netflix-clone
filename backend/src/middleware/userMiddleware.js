@@ -20,7 +20,8 @@ export default async function userMiddleware(req,res,next){
                 id:true,
                 username:true,
                 email:true,
-                image:true
+                image:true,
+                searchHistory:true
             }
         })
         if(!user){

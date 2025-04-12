@@ -96,3 +96,43 @@ export const searchTv=async(req,res)=>{
         return res.status(500).json({message:"Internal server error",error:e.message});
     }
 }
+
+export const getSearchHistory=async(req,res)=>{
+    try{
+        const content=req.user.searchHistory;
+        return res.status(200).json({content:content})
+    }catch(e){
+        console.log('Error in getSearchHistory',e.message);
+        return res.status(500).json({message:"Internal server error",error:e.message})
+    }
+}
+
+export const removeItemFromSearchHistory = async(req, res) => {
+    const id = req.params.id;
+    try {
+        const currentUser=await client.user.findUnique({
+            where:{
+                id:req.user.id
+            },
+            select:{
+                searchHistory:true
+            }
+        })
+
+        const updatedHistory=currentUser.searchHistory.filter(item=>item.id!==parseInt(id));
+        await client.user.update({
+            where:{
+                id:req.user.id
+            },
+            data:{
+                searchHistory:{
+                    set:updatedHistory
+                }
+            }
+        })
+        return res.status(200).json({message: "Item removed from search history"});
+    } catch(e) {
+        console.log('Error in removeItemFromSearchHistory', e.message);
+        return res.status(500).json({message: "Internal server error", error: e.message});
+    }
+}

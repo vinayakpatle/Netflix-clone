@@ -45,7 +45,8 @@ export const signup=async(req,res)=>{
             id:user.id,
             email:user.email,
             username:user.username,
-            image:user.image
+            image:user.image,
+            searchHistory:user.searchHistory
         }})
 
 
@@ -79,8 +80,8 @@ export const login=async(req,res)=>{
             id:user.id,
             email:user.email,
             username:user.username,
-            image:user.image
-            
+            image:user.image,
+            searchHistory:user.searchHistory
         }})
  
     }catch(e){
