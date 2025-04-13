@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.hero-bg{ 
+    background-image:linear-gradient(to bottom, rgba(0,0,0,0.8),rgba(0,0,0,0.1)), 
+    url("hero.png")
+}
+
+/*black from top(80% opacity) almost black to bottom(10% opacity) almost transparent*/
