@@ -2,7 +2,6 @@ import client from "../lib/db.js";
 import bcrypt from "bcrypt";
 import {z} from "zod";
 import generateToken from "../lib/token.js";
-const NetflixAvatar = '/assets/Netflix-avatar.png';
 
 export const signup=async(req,res)=>{
     const userSchema=z.object({
@@ -30,6 +29,9 @@ export const signup=async(req,res)=>{
         })
         if(isUserExistByUsername) return res.status(400).json({message:"User already exists with this username"});
         const hashedPassword=await bcrypt.hash(password,10);
+        const avatars=["/avatar1.png","/avatar2.png","/avatar3.png"];
+        const NetflixAvatar=avatars[Math.floor(Math.random()*avatars.length())];
+
         const user=await client.user.create({
             data:{
                 email:email,
