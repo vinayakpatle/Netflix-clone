@@ -1,14 +1,32 @@
 import React ,{useState,useEffect}from 'react'
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import {Loader} from 'lucide-react';
+import {toast} from 'react-hot-toast'
+import { useAuthStore } from '../store/authStore';
+
 
 
 const LoginPage = () => {
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
 
+    const {isLoggingIn,login}=useAuthStore()
+
+    const validateForm = () => {
+        if(!email.trim()) return toast.error("Email is required");
+        if(!/\S+@\S+\.\S+/.test(email)) return toast.error("Invalid error format");
+        if(!password) return toast.error("Password is required");
+        if(password.length<6) return toast.error("Password must be at least 6 character")
+        return true;
+      };
+
     const handleLogin=(e)=>{
         e.preventDefault();
-        console.log(email,password);
+        const success=validateForm();
+
+        if(success===true){
+            login({email:email,password:password})
+        }
     }
 
   return (
@@ -51,8 +69,8 @@ const LoginPage = () => {
                             />
                         </div>
     
-                        <button disabled={false} className='w-full bg-red-600 text-white font-semibold rounded-md py-2 hover:bg-red-700 focus:ring'>
-                            Login
+                        <button type='submit' disabled={isLoggingIn} className='w-full bg-red-600 flex items-center justify-center text-white font-semibold rounded-md py-2 hover:bg-red-700 focus:ring'>
+                            {isLoggingIn ? <Loader className='size-7 animate-spin' /> : "Login"}
                         </button>
                     </form>
                     <div className='text-gray-400 text-center'>

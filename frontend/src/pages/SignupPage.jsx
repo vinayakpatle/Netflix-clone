@@ -1,14 +1,35 @@
 import React ,{useState,useEffect}from 'react'
 import {Link} from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom';
+import {Loader} from 'lucide-react';
+import {toast} from 'react-hot-toast'
+import { useAuthStore } from '../store/authStore.js';
 
 const SignupPage = () => {
-    const [email,setEmail]=useState("");
+    const [searchParams]=useSearchParams();
+    const emailValue=searchParams.get("email");
+
+    const [email,setEmail]=useState(emailValue || "");
     const [password,setPassword]=useState("");
     const [username,setUsername]=useState("");
 
+    const {isSigningUp,signup}=useAuthStore();
+    
+    const validateForm = () => {
+        if(!email.trim()) return toast.error("Email is required");
+        if(!/\S+@\S+\.\S+/.test(email)) return toast.error("Invalid error format");
+        if(!username.trim()) return toast.error("Username is required");
+        if(!password) return toast.error("Password is required");
+        if(password.length<6) return toast.error("Password must be at least 6 character")
+        return true;
+      }
+
     const handleSignup=(e)=>{
         e.preventDefault();
-        console.log(email,password,username);
+        const success=validateForm()
+        if(success===true){
+            signup({email:email,username:username,password:password});
+        }
     }
 
   return (
@@ -64,8 +85,8 @@ const SignupPage = () => {
                         />
                     </div>
 
-                    <button disabled={false} className='w-full bg-red-600 text-white font-semibold rounded-md py-2 hover:bg-red-700 focus:ring'>
-                        Sign Up
+                    <button type='submit' disabled={isSigningUp} className='w-full bg-red-600 flex items-center justify-center text-white font-semibold rounded-md py-2 hover:bg-red-700 focus:ring'>
+                        {isSigningUp ? <Loader className='size-7 animate-spin'/> : "Sign Up"}
                     </button>
                 </form>
                 <div className='text-gray-400 text-center'>

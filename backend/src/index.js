@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 
 const app=express();
 app.use(cors({
-    origin:'http://loalhost:5173',
+    origin:'http://localhost:5173',
     methods:['GET','POST','PUT','DELETE'],
     credentials:true // allow session cookie ,headers from browser to pass through
 }))
