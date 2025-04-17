@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogOut, Menu, Search } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
+import { useContentStore } from '../store/content.js'
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMbileMenuOpen] = useState(false);
     const { logout, user } = useAuthStore()
+    const {setContentType}=useContentStore();
 
     const toggleMenuOpen = () => {
         setIsMbileMenuOpen(curr => !curr);
@@ -20,12 +22,16 @@ const Navbar = () => {
 
                 {/* desktop navbar item */}
                 <div className='hidden sm:flex items-center gap-2'>
-                    <Link to='/' className='hover:underline'>
+                    <Link to='/' className='hover:underline' onClick={()=>setContentType("movie")}>
                         Movies
                     </Link>
 
-                    <Link to='/' className='hover:underline'>
+                    <Link to='/' className='hover:underline' onClick={()=>setContentType("tv")}>
                         Tv Shows
+                    </Link>
+
+                    <Link to='/my_list' className='hover:underline'>
+                        My List
                     </Link>
 
                     <Link to='/history' className='hover:underline'>
@@ -53,6 +59,10 @@ const Navbar = () => {
 
                 <Link to='/' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
                     Tv Shows
+                </Link>
+
+                <Link to='/my_list' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
+                    My List
                 </Link>
 
                 <Link to='/history' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
