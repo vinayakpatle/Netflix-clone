@@ -7,6 +7,7 @@ import { ChevronLeft,ChevronRight } from 'lucide-react'
 import ReactPlayer from 'react-player'
 import {formatReleaseDate} from '../utils/dateFunction.js'
 import {ORIGINAL_IMG_BASE_URL,SMALL_IMG_BASE_URL} from "../utils/constant.js"
+import WatchPageSkeleton from "../component/skeleton/WatchPageSkeleton.jsx"
 
 const WatchPage = () => {
     const {id}=useParams() // it gives object that's why destructure it
@@ -59,7 +60,24 @@ const WatchPage = () => {
             }
         }
         fetchContentDetails()
-    },[contentType,id])
+    },[contentType,id]);
+
+    if(loading){
+        return <div className='min-h-screen bg-black p-10'>
+            <WatchPageSkeleton />
+        </div>
+    }
+
+    if(!content){
+        return <div className='bg-black min-h-screen text-white'>
+            <div className='max-w-6xl mx-auto'>
+                <Navbar />
+                <div className='text-center h-full px-4 py-8 mt-40'>
+                    <h1 className='text-2xl sm:text-5xl font-bold text-balance'>Content not found 😥</h1>
+                </div>
+            </div>
+        </div>
+    }
 
 
     const handlePrev=()=>{
@@ -75,11 +93,21 @@ const WatchPage = () => {
     }
 
     const scrollLeft=()=>{
-        
+        if(scrollRef.current){
+            scrollRef.current.scrollBy({left:-scrollRef.current.offsetWidth,behavior:"smooth"})
+        }
     }
 
     const scrollRight=()=>{
+        if(scrollRef.current){
+            scrollRef.current.scrollBy({left:scrollRef.current.offsetWidth,behavior:"smooth"})
+        }
+    }
 
+    if(loading){
+        return <div className=''>
+
+        </div>
     }
 
     //console.log(trailers)
@@ -147,16 +175,16 @@ const WatchPage = () => {
 
             {/*SIMILAR CONTENT*/}
             {similarContent.length>0 && (
-                <div className='mt-12 max-w-5xl mx-auto relative group'>
+                <div className='mt-12 max-w-5xl mx-auto relative'>
                     <h3 className='text-3xl font-bold mb-4'>Similar Movies/Tv Show</h3>
                     <div className='flex overflow-x-scroll no-scrollbar gap-4 pb-4 ' ref={scrollRef}>
                         {similarContent.map((content)=>{
-                            if(content?.poster_path===null) return null;
+                            if (content.poster_path === null) return null;
                             return (
                                 <Link key={content?.id} to={`/watch/${content?.id}`} className='w-52 flex-none'>
-                                    <img src={`${SMALL_IMG_BASE_URL}/${content?.poster_path}`} 
+                                    <img src={`${SMALL_IMG_BASE_URL}/${content.poster_path}`} 
                                     alt='poster img'
-                                    className='w-full rounded-md h-auto'/>
+                                    className='w-full rounded-md h-auto hover:scale-110 transition-transform duration-200 ease-in-out'/>
 
                                     <h4 className='mt-2 text-lg font-semibold'>{content?.name || content?.title}</h4>
                                 </Link>
@@ -164,11 +192,11 @@ const WatchPage = () => {
                         })}
                     </div>
 
-                    <div className='absolute top-1/2 -translate-y-1/2 left-2 flex items-center justify-center bg-black rounded-full cursor-pointer size-10 text-white' >
+                    <div className='absolute top-1/2 -translate-y-1/2 left-2 flex items-center justify-center bg-black/60 hover:bg-black/75  rounded-full cursor-pointer size-10 text-white' onClick={scrollLeft} >
                         <ChevronLeft size={24} />
                     </div>
 
-                    <div>
+                    <div className='absolute top-1/2 -translate-y-1/2 right-2 flex items-center justify-center bg-black/60 hover:bg-black/75  rounded-full cursor-pointer size-10 text-white' onClick={scrollRight}>
                         <ChevronRight size={24} />
                     </div>
                 </div>
