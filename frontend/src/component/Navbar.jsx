@@ -30,10 +30,6 @@ const Navbar = () => {
                         Tv Shows
                     </Link>
 
-                    <Link to='/my_list' className='hover:underline'>
-                        My List
-                    </Link>
-
                     <Link to='/history' className='hover:underline'>
                         Search History
                     </Link>
@@ -59,10 +55,6 @@ const Navbar = () => {
 
                 <Link to='/' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
                     Tv Shows
-                </Link>
-
-                <Link to='/my_list' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
-                    My List
                 </Link>
 
                 <Link to='/history' className='p-2 block hover:underline' onClick={toggleMenuOpen}>
