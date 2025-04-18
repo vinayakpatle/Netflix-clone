@@ -1,6 +1,7 @@
 import React,{useState,useEffect}from 'react'
 import Navbar from '../component/Navbar';
 import { useContentStore } from '../store/content.js';
+import { Search } from 'lucide-react';
 
 const SearchPage = () => {
     const [activeTab,setActiveTab]=useState('movie');
@@ -14,11 +15,15 @@ const SearchPage = () => {
         setResults([]);
     }
 
+    const handleSearch=async(e)=>{
+
+    }
+
   return (
     <div className='bg-black min-h-screen text-white'>
         <Navbar />
         <div className='container mx-auto px-4 py-8 h-full'>
-            <div className='flex justify-center gap-3 mb-4'>
+            <div className='flex justify-center gap-3  mb-4'>
                 <buton 
                     className={`px-4 py-2 rounded ${activeTab==="movie" ? 'bg-red-600' : 'bg-gray-800'} hover:bg-red-800`} 
                     onClick={()=>handleTabClick("movie")}
@@ -38,6 +43,19 @@ const SearchPage = () => {
                     Person
                 </buton>
             </div>
+
+            <form onSubmit={handleTabClick} className='flex gap-2 items-stretch mb-8 max-w-2xl mx-auto'>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e)=>setSearchQuery(e.target.value)}
+                    placeholder={`Search for a ${activeTab}`}
+                    className='w-full p-2 bg-gray-800 rounded text-white'
+                />
+                <button type='submit' className='p-2 rounded bg-red-600 hover:bg-red-800 text-white'>
+                    <Search className='size-6' />
+                </button>
+            </form>
         </div>
     </div>
   )
