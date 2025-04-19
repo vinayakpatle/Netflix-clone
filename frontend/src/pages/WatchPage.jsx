@@ -104,12 +104,6 @@ const WatchPage = () => {
         }
     }
 
-    if(loading){
-        return <div className=''>
-
-        </div>
-    }
-
     //console.log(trailers)
     //console.log(similarContent)
     //console.log(content)
