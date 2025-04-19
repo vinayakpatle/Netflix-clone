@@ -4,6 +4,8 @@ import { useContentStore } from '../store/content.js';
 import { Search } from 'lucide-react';
 import { axiosInstance } from '../lib/axios.js';
 import {toast } from 'react-hot-toast'
+import {Link} from 'react-router-dom'
+import {SMALL_IMG_BASE_URL} from "../utils/constant.js"
  
 const SearchPage = () => {
     const [activeTab,setActiveTab]=useState('movie');
@@ -75,6 +77,29 @@ const SearchPage = () => {
                     <Search className='size-6' />
                 </button>
             </form>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+                {results.map((result)=>{
+                    if(!result.poster_path && !result.profile_path) return null;
+                    return(
+                        <div key={result.id} className='bg-gray-800 p-4 rounded'>
+                            {activeTab==="person" ? (
+                                <div className='flex flex-col items-center'>
+                                    <img src={`${SMALL_IMG_BASE_URL}/${result.profile_path}`} alt={`${result?.name}`} className='max-h-96 rounded mx-auto' />
+                                    <h2 className='mt-2 text-xl text-center font-bold'>{result.name}</h2>
+                                </div>    
+                            ) : (
+                                <Link onClick={()=>{setContentType(activeTab)}} to={`/watch/${result.id}`} className='flex flex-col items-center'>
+                                    <img src={`${SMALL_IMG_BASE_URL}/${result.poster_path}`} alt={result?.name || result?.title}
+                                    className='max-h-96 mx-auto rounded'  
+                                    />
+                                    <h2 className='mt-2 text-xl font-bold text-center'>{result?.name || result?.title}</h2>
+                                </Link>
+                            )}
+                         </div>   
+                    )
+                })}
+            </div>
         </div>
     </div>
   )
